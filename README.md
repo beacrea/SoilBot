@@ -7,5 +7,6 @@ This is an Ardunio project that measures soil moisture to determine if the plant
 - A hosted web interface with values and event history being displayed
 
 ## Current Equipment
+<img src="https://cdn.sparkfun.com//assets/parts/1/1/7/2/2/13975-01.jpg" width="100"/>
 - [SparkFun Soil Moisture Sensor](https://www.sparkfun.com/products/13322)
 - [SparkFun RedBoard](https://www.sparkfun.com/products/13975)
