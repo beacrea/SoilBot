@@ -12,3 +12,10 @@ This is an Ardunio project that measures soil moisture to determine if the plant
 | ------------- | ------------- |
 | <img src="https://cdn.sparkfun.com//assets/parts/1/1/7/2/2/13975-01.jpg" width="100"/>  | [SparkFun RedBoard](https://www.sparkfun.com/products/13975)  |
 | <img src="https://cdn.sparkfun.com//assets/parts/1/0/6/1/0/13322-01.jpg" width="100"/> |  [SparkFun Soil Moisture Sensor](https://www.sparkfun.com/products/13322) |
+
+
+| Tables   |      Are      |  Cool |
+|----------|:-------------:|------:|
+| col 1 is |  left-aligned | $1600 |
+| col 2 is |    centered   |   $12 |
+| col 3 is | right-aligned |    $1 |
