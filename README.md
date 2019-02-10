@@ -5,3 +5,7 @@ This is an Ardunio project that measures soil moisture to determine if the plant
 - Support for multiple moisture sensors with synthesized values reported to an LCD screen
 - A water pump that hydrates plants until ideal moisture threshold is reached
 - A hosted web interface with values and event history being displayed
+
+## Current Equipment
+- [SparkFun Soil Moisture Sensor](https://www.sparkfun.com/products/13322)
+- [SparkFun RedBoard](https://www.sparkfun.com/products/13975)
