@@ -3,7 +3,7 @@
     https://coty.design
 
     Project started: Feb 2019
-    Project repo: https://github.com/beacrea/SoilMoistureManager
+    Project repo: https://github.com/beacrea/SoilBot
 */
 /********************************************************
  Libraries
