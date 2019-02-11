@@ -39,7 +39,7 @@ int soilPin = A0;
 int soilPower = 7;
 
 // Set initial moisture value
-int val = 0;
+int moistureVal = 0;
 
 // Initialise the LCD
 LiquidCrystal_I2C      lcd(I2C_ADDR, En_pin, Rw_pin, Rs_pin, D4_pin, D5_pin, D6_pin, D7_pin);
@@ -153,24 +153,30 @@ void loop()
   // set up earlier.
 
   int sensorValue;
-  sensorValue = readSoil();
 
   // Animation
   runAnimation();
   delay(2000);
+
+  // Run Measurement
+  readSoil();
   
   // Display value
   lcd.clear();
   lcd.setCursor(0, 1);
-  lcd.print("Soil Moisture = ");
-  Serial.print("Soil Moisture = ");
-  Serial.println(readSoil());
+  lcd.print("Soil Moisture: ");
+  lcd.setCursor(0, 2);
+  lcd.print(moistureVal);
 
+  // Serial output
+  Serial.print("Soil Moisture: ");
+  Serial.println(moistureVal);
+  
+  // Hold for readability
   delay(5000);
 }
 
 void runAnimation() {
-
   // First frame
   lcd.setCursor(0, 0);
   for (int i = 1; i <= 10; i++) {
@@ -214,6 +220,9 @@ void runAnimation() {
 // This is a function used to get the soil moisture content
 int readSoil()
 {
+  // Reset moisture
+  moistureVal = 0;
+  
   // Turn D7 "On"
   digitalWrite(soilPower, HIGH);
 
@@ -221,11 +230,11 @@ int readSoil()
   delay(10);
 
   // Read the SIG value form sensor
-  val = analogRead(soilPin);
+  moistureVal = analogRead(soilPin);
 
   // Turn D7 "Off"
   digitalWrite(soilPower, LOW);
 
   // Send current moisture value
-  return val;
+  return moistureVal;
 }
