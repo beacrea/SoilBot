@@ -5,8 +5,9 @@
     Project started: Feb 2019
     Project repo: https://github.com/beacrea/SoilMoistureManager
 */
-
-// Libraries to include
+/********************************************************
+ Libraries
+ *******************************************************/
 #include <Wire.h>
 #include <LCD.h>
 #include <LiquidCrystal_I2C.h>
@@ -26,12 +27,6 @@
 // we'll use a digital pin to power the sensor. This will
 // prevent corrosion of the sensor as it sits in the soil.
 
-/********************************************************
-   Change these values based on your calibration values
- *******************************************************/
-int thresholdUp = 400;
-int thresholdDown = 250;
-
 // Declare a variable for the soil moisture sensor
 int soilPin = A0;
 
@@ -40,6 +35,15 @@ int soilPower = 7;
 
 // Set initial moisture value
 int moistureVal = 0;
+
+// Sets initial message
+String valueMessage = "";
+
+/********************************************************
+ Calibration
+ *******************************************************/
+int moistureCeiling = 800;
+int moistureFloor = 250;
 
 // Initialise the LCD
 LiquidCrystal_I2C      lcd(I2C_ADDR, En_pin, Rw_pin, Rs_pin, D4_pin, D5_pin, D6_pin, D7_pin);
@@ -89,7 +93,76 @@ byte sun[] = {
   B00000
 };
 
+byte drop[] = {
+  B00100,
+  B00100,
+  B01110,
+  B01110,
+  B11111,
+  B11111,
+  B01110,
+  B00000
+};
 
+byte cactus[] = {
+  B00100,
+  B01100,
+  B01100,
+  B01101,
+  B11111,
+  B01100,
+  B01100,
+  B01100
+};
+
+byte smile[] = {
+  B00000,
+  B01110,
+  B10101,
+  B11111,
+  B10101,
+  B11011,
+  B01110,
+  B00000
+};
+
+byte bone[] = {
+  B00000,
+  B01010,
+  B01110,
+  B00100,
+  B00100,
+  B01110,
+  B01010,
+  B00000
+};
+
+byte frown[] = {
+  B00000,
+  B01110,
+  B10101,
+  B11111,
+  B11011,
+  B10101,
+  B01110,
+  B00000
+};
+
+byte glassLow[] = {
+  B00000,
+  B01010,
+  B01010,
+  B01010,
+  B01010,
+  B01110,
+  B01110,
+  B00000
+};
+
+
+/********************************************************
+ Setup
+ *******************************************************/
 void setup()
 {
   Serial.begin(9600); // Open serial over USB
@@ -103,9 +176,13 @@ void setup()
 
   // Create custom character
   lcd.createChar(1, heart);
-  lcd.createChar(2, degree);
+  lcd.createChar(2, glassLow);
   lcd.createChar(3, flower);
   lcd.createChar(4, sun);
+  lcd.createChar(5, drop);
+  lcd.createChar(6, cactus);
+  lcd.createChar(7, smile);
+  lcd.createChar(8, bone);
 
   // Switch on the backlight
   lcd.setBacklightPin(BACKLIGHT_PIN, POSITIVE);
@@ -136,9 +213,12 @@ void setup()
   }
 
   // Hold before running
-  delay(10000);
+  delay(8000);
 }
 
+/********************************************************
+ Main Loop
+ *******************************************************/
 void loop()
 {
   // Here we are declaring a string, which are lines of words,
@@ -166,7 +246,7 @@ void loop()
   lcd.setCursor(0, 1);
   lcd.print("Soil Moisture: ");
   lcd.setCursor(0, 2);
-  lcd.print(moistureVal);
+  translateValue();
 
   // Serial output
   Serial.print("Soil Moisture: ");
@@ -176,23 +256,31 @@ void loop()
   delay(5000);
 }
 
+
+/********************************************************
+ Animation
+ *******************************************************/
 void runAnimation() {
   // First frame
   lcd.setCursor(0, 0);
   for (int i = 1; i <= 10; i++) {
-    lcd.print("* ");
+    lcd.write(5);
+    lcd.print(" ");
   }
   lcd.setCursor(0, 1);
   for (int i = 1; i <= 10; i++) {
-    lcd.print(" *");
+    lcd.print(" ");
+    lcd.write(5);
   }
   lcd.setCursor(0, 2);
   for (int i = 1; i <= 10; i++) {
-    lcd.print("* ");
+    lcd.write(5);
+    lcd.print(" ");
   }
   lcd.setCursor(0, 3);
   for (int i = 1; i <= 10; i++) {
-    lcd.print(" *");
+    lcd.print(" ");
+    lcd.write(5);
   }
 
   // Delay
@@ -201,23 +289,29 @@ void runAnimation() {
   // Second Frame
   lcd.setCursor(0, 0);
   for (int i = 1; i <= 10; i++) {
-    lcd.print(" *");
+    lcd.print(" ");
+    lcd.write(5);
   }
   lcd.setCursor(0, 1);
   for (int i = 1; i <= 10; i++) {
-    lcd.print("* ");
+    lcd.write(5);
+    lcd.print(" ");
   }
   lcd.setCursor(0, 2);
   for (int i = 1; i <= 10; i++) {
-    lcd.print(" *");
+    lcd.print(" ");
+    lcd.write(5);
   }
   lcd.setCursor(0, 3);
   for (int i = 1; i <= 10; i++) {
-    lcd.print("* ");
+    lcd.write(5);
+    lcd.print(" ");
   }
 }
 
-// This is a function used to get the soil moisture content
+/********************************************************
+ Soil Measurement
+ *******************************************************/
 int readSoil()
 {
   // Reset moisture
@@ -237,4 +331,38 @@ int readSoil()
 
   // Send current moisture value
   return moistureVal;
+}
+
+/********************************************************
+ Result Synthesis
+ *******************************************************/
+String translateValue() {
+  if (moistureVal > moistureCeiling) {
+    lcd.write(5);
+    lcd.write(5);
+    lcd.write(5);
+    lcd.print(" ");
+    lcd.print("Too much water!");
+  }
+  else if (moistureVal < moistureCeiling && moistureVal > moistureFloor) {
+    lcd.write(3);
+    lcd.write(3);
+    lcd.write(3);
+    lcd.print(" ");
+    lcd.print("Doing great");
+  }
+  else if (moistureVal <= moistureFloor && moistureVal > (moistureFloor/2)) {
+    lcd.write(2);
+    lcd.write(2);
+    lcd.write(2);
+    lcd.print(" ");
+    lcd.print("Need some water");
+  }
+  else {
+    lcd.write(8);
+    lcd.write(8);
+    lcd.write(8);
+    lcd.print(" Dry as bones!");
+  }
+  return valueMessage;
 }
