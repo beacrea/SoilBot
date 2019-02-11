@@ -1,4 +1,4 @@
-# Soil Moisture Manager
+# SoilBot
 This is an Ardunio project that measures soil moisture to determine if the plant needs to be watered. It's designed to be a data-driven support system for the various plants I'd like to care for. By being able to consistently deliver desired moisture conditions into soil, I hope to keep plants growing on auto-pilot with various tweaks to threshholds.
 
 ## Project Shots
