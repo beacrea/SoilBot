@@ -245,8 +245,16 @@ void loop()
   lcd.clear();
   lcd.setCursor(0, 1);
   lcd.print("Soil Moisture: ");
+  lcd.setCursor(0, 0);
+  for (int i = 1; i <= 20; i++) {
+    lcd.print("-");
+  }
   lcd.setCursor(0, 2);
   translateValue();
+  lcd.setCursor(0, 3);
+  for (int i = 1; i <= 20; i++) {
+    lcd.print("-");
+  }
 
   // Serial output
   Serial.print("Soil Moisture: ");
