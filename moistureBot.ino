@@ -42,8 +42,8 @@ String valueMessage = "";
 /********************************************************
  Calibration
  *******************************************************/
-int moistureCeiling = 800;
-int moistureFloor = 250;
+int moistureCeiling = 870;
+int moistureFloor = 500;
 
 // Initialise the LCD
 LiquidCrystal_I2C      lcd(I2C_ADDR, En_pin, Rw_pin, Rs_pin, D4_pin, D5_pin, D6_pin, D7_pin);
@@ -213,7 +213,7 @@ void setup()
   }
 
   // Hold before running
-  delay(8000);
+  delay(4000);
 }
 
 /********************************************************
@@ -244,7 +244,8 @@ void loop()
   // Display value
   lcd.clear();
   lcd.setCursor(0, 1);
-  lcd.print("Soil Moisture: ");
+  lcd.print("Moisture: ");
+  lcd.print(moistureVal);
   lcd.setCursor(0, 0);
   for (int i = 1; i <= 20; i++) {
     lcd.print("-");
@@ -260,8 +261,8 @@ void loop()
   Serial.print("Soil Moisture: ");
   Serial.println(moistureVal);
   
-  // Hold for readability
-  delay(5000);
+  // Delay until next reading. Set for 15 min.
+  delay(900000);
 }
 
 
@@ -352,14 +353,14 @@ String translateValue() {
     lcd.print(" ");
     lcd.print("Too much water!");
   }
-  else if (moistureVal < moistureCeiling && moistureVal > moistureFloor) {
+  else if (moistureVal < moistureCeiling && moistureVal > (moistureCeiling*0.75)) {
     lcd.write(3);
     lcd.write(3);
     lcd.write(3);
     lcd.print(" ");
     lcd.print("Doing great");
   }
-  else if (moistureVal <= moistureFloor && moistureVal > (moistureFloor/2)) {
+  else if (moistureVal <= moistureFloor && moistureVal > (moistureFloor)) {
     lcd.write(2);
     lcd.write(2);
     lcd.write(2);
