@@ -7,6 +7,7 @@ This is an Ardunio project that measures soil moisture to determine if the plant
 <img src="https://dl.dropboxusercontent.com/s/qrigbiz5ptebnbi/soilbot_readout.jpg" width="480"/>
 
 ## Project Features Planned
+- Migrate to soldered [Adafruit Metro Mini](https://www.adafruit.com/product/2590) instead of RedBoard and add external power
 - Support for multiple moisture sensors with synthesized values reported to an LCD screen
 - A water pump that hydrates plants until ideal moisture threshold is reached
 - A hosted web interface with values and event history being displayed
